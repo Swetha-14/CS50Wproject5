@@ -1,0 +1,41 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <img class="rounded-circle profile mx-auto d-block img-fluid unlock-icon" src= "{% static 'network/default.jpg' %}">
+            <h1 class="col-auto mr-auto" style="text-align: center;">{{ target_user.username }}</h1>    
+            <br/>
+            <div class="container">
+                <div class="row ml-5 pl-5">
+                    <div class="col">
+                        <button id="follower" type="button" class="button btn btn-light"><h4>Followers</h4>
+                        <span class ="pr-5" style="font-size:x-large ;"><b>{{ target_user.followers.all.count }}</b></span></button>
+                    </div>
+                    <div class="col">
+                        <button  id="following" type="button" class="button btn btn-light"><h4>Following</h4>
+                        <span class ="pr-5" style="font-size:x-large ;"><b>{{target_user.following.all.count }}</b></span></button>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+                {% if user.id != target_user.id %}
+                    <button id="follow-btn" class="btn btn-primary btn-lg btn-block">
+                    {% if not user in target_user.followers.all %}
+                        Follow
+                    {% else %}
+                        Unfollow
+                    {% endif %}
+                    </button>
+                {% endif %}
+            {% endif %} 
+        </div>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block script %}
+    <script id="user-script" data-target="{{ target_user.username }}" src="{% static 'network/follow.js' %}"></script>
+{% endblock %}

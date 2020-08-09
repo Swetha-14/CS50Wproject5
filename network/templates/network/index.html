@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h1>All Posts</h1>
+    <br/>
+    {% if user.is_authenticated %}
+        <div class="card">
+            <div class="card-body">
+                <form id="new-post">
+                    <label>Create a New Post</label>
+                    <textarea rows="5" cols="25" id="post-content"  type="text" class="form-control" required placeholder="Write your post here"></textarea>
+                    <button class="btn btn-primary" type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+        
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script id="index-script" src="{% static 'network/index.js' %}"></script>
+{% endblock %}

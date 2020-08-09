@@ -1,0 +1,90 @@
+body {
+    background-color: #778899;
+}
+
+.nav-link {
+  color: #3b4c5d ;
+}
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  box-shadow: 10px 10px 5px rgb(255, 255, 255);
+}
+  
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+  
+.article-content {
+  white-space: pre-line;
+}
+  
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+  
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+  
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+  
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+  
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+  
+.account-heading {
+  font-size: 2.5rem;
+}
+
+h1 {
+  text-shadow: 2px 2px 5px rgb(114, 110, 110);
+}
+
+.pagination {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.profile {
+  height: 150px;
+  width: 150px;
+}
+
+.button {
+  text-decoration: none;
+  background: none!important;
+  border: none;
+  font-family: arial, sans-serif;
+ 
+  color: rgb(11, 31, 41);
+  cursor: pointer;
+  -moz-text-align-last: right; 
+  text-align-last: right;
+  padding-left: 20px;
+}
+.heart {
+  cursor: pointer;
+}
+

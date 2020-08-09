@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
+        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <script id="shared-script" data-user="{{ user.username }}" src="{% static 'network/edit.js' %}"></script>
+        {% block script %}
+        {% endblock %}
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Network</a>
+          
+            <div>
+              <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user' user.username %}"><strong>{{ user.username }}</strong></a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'following' %}">Following</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+              </ul>
+            </div>
+          </nav>
+        
+        <div class="body">
+            
+            <main role="main" class="container">
+                <div class="row">
+                  <div class="col-md-8">
+                    <br/>
+                    {% block body %}
+                    {% endblock %}
+                    <br/><br/>
+                    {% for post in page_obj %}
+                    <article class="media content-section shadow-lg p-3 mb-5 bg-white rounded">
+                        <img class="rounded-circle article-img" src= "{% static 'network/default.jpg' %}">
+                        <div class="media-body">
+                            <div class="article-metadata">
+                                <a class="mr-2" href="{% url 'user' post.user %}">{{ post.user }}</a>
+                                <small class="text-muted">{{ post.timestamp|date:"F d, Y" }}</small>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                {% if post.user == user %}
+                                    <button onclick="edit('{{ post.id }}');" id="edit-{{ post.id }}" class="btn btn-outline-primary btn-sm topright">Edit</button>
+                                {% endif %}
+                            </div>
+                            <p class="article-content" id="content-{{ post.id }}" style="white-space: pre-line">{{ post.content }}</p>
+                            <div onclick="like('{{ post.id }}');">
+                                {% if user in post.likes.all %}
+                                    <a class="heart" id="heart-{{ post.id }}">❤️</a>
+                                {% else %}
+                                    <a class="heart" id="heart-{{ post.id }}">🤍</a>
+                                {% endif %}
+                                <span id="counter-{{ post.id }}" style="font-size: large;">{{ post.likes.all.count }}</span>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                        <h2><i>No posts</i></h2>
+                {% endfor %}
+                    
+                <div class="pagination">
+                {% if page_obj.paginator.num_pages != 1 %}
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
+                        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-outline-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+                </div>
+              </main>
+        </div>
+    </body>
+</html>
